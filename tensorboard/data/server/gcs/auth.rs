@@ -53,6 +53,7 @@ fn get_token() -> Result<AccessToken, gcp_auth::Error> {
     async fn service_account_token() -> Result<gcp_auth::Token, gcp_auth::Error> {
         let manager = authentication_manager().await;
         let token_res = manager.get_token(SCOPES).await;
+        warn!("TOKEN RES: {:?}", token_res);
         token_res
     }
 
@@ -62,7 +63,11 @@ fn get_token() -> Result<AccessToken, gcp_auth::Error> {
         .unwrap()
         .block_on(service_account_token())?;
 
-    Ok(AccessToken::new(Some(token)))
+    warn!("Getting token.");
+    let new_token = AccessToken::new(Some(token));
+    warn!("{}", new_token.anonymous());
+    Ok(new_token)
+    // Ok(AccessToken::new(Some(token)))
 }
 
 /// A potentially active token. Use [`authenticate`][Self::authenticate] to add an `Authorization`
@@ -139,7 +144,10 @@ impl TokenStore {
         // check if access token is not none but token inside is none
 
         let token = self.token.read().expect("failed to read auth token");
+        warn!("TOKEN STORE TOKEN");
+        warn!("{:?}", token);
         if let Some(t) = &*token {
+            warn!("IS IT ANONYMOUS? {}", t.anonymous());
             // If the token is anonymous, do nothing with the request
             if t.anonymous() {
                 return rb;
@@ -173,6 +181,7 @@ impl TokenStore {
         }
         if let Some(ref t) = *token {
             debug!("Obtained new access token.");
+            debug!("Is it valid? {}", t.is_valid());
              // If the token is valid, authenticate the request with it
              if t.is_valid() {
                 return t.authenticate(rb);

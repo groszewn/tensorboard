@@ -35,8 +35,10 @@ rust_library(
     name = "tracing_core",
     srcs = glob(["**/*.rs"]),
     crate_features = [
+        "default",
         "lazy_static",
         "std",
+        "valuable",
     ],
     crate_root = "src/lib.rs",
     data = [],
@@ -46,6 +48,7 @@ rust_library(
     ],
     tags = [
         "cargo-raze",
+        "crate-name=tracing-core",
         "manual",
     ],
     version = "0.1.26",

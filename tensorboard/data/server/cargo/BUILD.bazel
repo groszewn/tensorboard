@@ -265,6 +265,24 @@ alias(
 )
 
 alias(
+    name = "tracing_futures",
+    actual = "@raze__tracing_futures__0_2_5//:tracing_futures",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "tracing_subscriber",
+    actual = "@raze__tracing_subscriber__0_3_11//:tracing_subscriber",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
     name = "walkdir",
     actual = "@raze__walkdir__2_3_1//:walkdir",
     tags = [

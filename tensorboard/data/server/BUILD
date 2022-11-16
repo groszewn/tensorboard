@@ -78,6 +78,8 @@ rust_library(
         "//tensorboard/data/server/cargo:tokio_stream",
         "//tensorboard/data/server/cargo:tonic",
         "//tensorboard/data/server/cargo:tonic_reflection",
+        "//tensorboard/data/server/cargo:tracing_futures",
+        "//tensorboard/data/server/cargo:tracing_subscriber",
         "//tensorboard/data/server/cargo:walkdir",
     ],
 )
@@ -145,6 +147,7 @@ rust_binary(
     srcs = ["main.rs"],
     edition = "2018",
     deps = [
+        "//tensorboard/data/server/cargo:tracing_subscriber",
         ":rustboard_core",
     ],
 )

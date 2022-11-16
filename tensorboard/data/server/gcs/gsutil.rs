@@ -58,6 +58,9 @@ struct CatOpts {
 
 fn main() {
     let opts: Opts = Opts::parse();
+
+    use tracing_subscriber;
+    tracing_subscriber::fmt::init();
     init_logging(&opts);
 
     let client = gcs::Client::new().unwrap();
