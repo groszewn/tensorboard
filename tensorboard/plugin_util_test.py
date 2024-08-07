@@ -14,6 +14,7 @@
 
 
 import textwrap
+from unittest import mock
 
 
 from tensorboard import context
@@ -227,6 +228,25 @@ class ExperimentIdTest(tb_test.TestCase):
     def test_present(self):
         environ = {experiment_id.WSGI_ENVIRON_KEY: "123"}
         self.assertEqual(plugin_util.experiment_id(environ), "123")
+
+
+class PackageVersionTest(tb_test.TestCase):
+  """Tests for `plugin_util.package_version_greater_than_or_equal`."""
+
+  def test_package_version_greater_than(self):
+    with mock.patch("importlib.metadata.version") as mock_version:
+      mock_version.return_value = "5.0.1"
+      self.assertTrue(plugin_util.package_version_greater_than_or_equal("test", "5.0.0"))
+
+  def test_package_version_equal_to(self):
+    with mock.patch("importlib.metadata.version") as mock_version:
+      mock_version.return_value = "5.0.0"
+      self.assertTrue(plugin_util.package_version_greater_than_or_equal("test", "5.0.0"))
+
+  def test_package_version_less_than(self):
+    with mock.patch("importlib.metadata.version") as mock_version:
+      mock_version.return_value = "4.9.9"
+      self.assertFalse(plugin_util.package_version_greater_than_or_equal("test", "5.0.0"))
 
 
 if __name__ == "__main__":

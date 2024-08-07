@@ -14,7 +14,8 @@
 # ==============================================================================
 """Provides utilities that may be especially useful to plugins."""
 
-
+from importlib import metadata
+from packaging import version
 import threading
 
 from bleach.sanitizer import Cleaner
@@ -191,6 +192,17 @@ def experiment_id(environ):
       A experiment ID, as a possibly-empty `str`.
     """
     return environ.get(_experiment_id.WSGI_ENVIRON_KEY, "")
+
+
+def package_version_greater_than_or_equal(package_name, version_string):
+  """Compare the package name is greater than or equal to the provided version.
+
+  Args:
+    package_name: The package name to be checked.
+    version: The version string to compare the package against.
+  """
+  current_version = metadata.version(package_name)
+  return version.parse(current_version) >= version.parse(version_string)
 
 
 class _MetadataVersionChecker:
